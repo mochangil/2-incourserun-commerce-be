@@ -17,6 +17,8 @@ LOCAL_APPS = [
     "app.staticfile",
     "app.example.apps.ExampleConfig",
     "app.user.apps.UserConfig",
+    "app.product.apps.ProductConfig",
+
 ]
 
 THIRD_PARTY_APPS = [
