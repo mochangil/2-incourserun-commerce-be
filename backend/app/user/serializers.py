@@ -1,10 +1,12 @@
 import requests
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import User
 
 from app.user.models import User, Social, SocialKindChoices
 
@@ -77,3 +79,11 @@ class UserSocialLoginSerializer(serializers.Serializer):
 
     def get_naver_user_id(self, code, redirect_uri):
         pass
+
+
+# class UserCreateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=get_user_model()
+
+#     def create(self, validated_data):
+        
