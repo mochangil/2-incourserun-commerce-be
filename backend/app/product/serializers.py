@@ -1,7 +1,5 @@
-from re import U
-from this import d
 from rest_framework import serializers
-from rest_framework.mixins import UpdateModelMixin,DestroyModelMixin
+
 
 from app.product.models import Product
 

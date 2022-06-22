@@ -10,7 +10,7 @@ class Order(models.Model):
     #deliveryfee -> True = 3000, False = free
     deliveryfee=models.BooleanField(verbose_name="배달비",default=True)
     zipcode = models.IntegerField(verbose_name="우편번호",null=True)
-    address = models.CharField(verbose_name="주소",null=True)
+    address = models.CharField(verbose_name="주소",max_length=100,null=True)
     orderdate=models.DateTimeField(verbose_name="주문시간정보",auto_now=True)
 
     class Meta:
@@ -18,4 +18,4 @@ class Order(models.Model):
         verbose_name_plural = verbose_name
     
     def __str__(self):
-        return self.name
+        return self.user

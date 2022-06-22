@@ -1,6 +1,5 @@
 from collections import UserList
-from rest_framework.generics import CreateAPIView,ListAPIView,GenericAPIView
-from rest_framework.mixins import UpdateModelMixin,DestroyModelMixin
+from rest_framework.generics import CreateAPIView,ListAPIView,RetrieveUpdateDestroyAPIView
 
 from app.user.serializers import *
 
@@ -13,7 +12,7 @@ class UserSocialLoginView(CreateAPIView):
     """
     serializer_class = UserSocialLoginSerializer
 
-class UserListView(CreateAPIView):
+class UserListView(ListAPIView):
     """
     회원목록 확인
     """
@@ -21,7 +20,7 @@ class UserListView(CreateAPIView):
     queryset=user.objects.all()
     serializer_class = UserListSerializer
 
-class UserUpdateDeleteView(GenericAPIView,UpdateModelMixin,DestroyModelMixin):
+class UserUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     회원 update&Delete
     """
