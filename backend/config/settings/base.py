@@ -18,6 +18,8 @@ LOCAL_APPS = [
     "app.example.apps.ExampleConfig",
     "app.user.apps.UserConfig",
     "app.product.apps.ProductConfig",
+    "app.review.apps.ReviewConfig",
+    "app.order.apps.OrderConfig",
 
 ]
 

@@ -1,4 +1,3 @@
-from re import U
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny
 from app.product.models import Product
