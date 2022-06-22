@@ -1,6 +1,8 @@
-from rest_framework.generics import CreateAPIView
+from collections import UserList
+from rest_framework.generics import CreateAPIView,ListAPIView,GenericAPIView
+from rest_framework.mixins import UpdateModelMixin,DestroyModelMixin
 
-from app.user.serializers import UserSocialLoginSerializer
+from app.user.serializers import *
 
 
 class UserSocialLoginView(CreateAPIView):
@@ -11,8 +13,19 @@ class UserSocialLoginView(CreateAPIView):
     """
     serializer_class = UserSocialLoginSerializer
 
-# class UserCreateView(CreateAPIView):
-#     """
-#     소셜로그인 이후의 정보를 가지고 추가적인 회원정보를 입력받는다.
-#     """
-#     serializer_class = UserCreateSeril
+class UserListView(CreateAPIView):
+    """
+    회원목록 확인
+    """
+    user = get_user_model()
+    queryset=user.objects.all()
+    serializer_class = UserListSerializer
+
+class UserUpdateDeleteView(GenericAPIView,UpdateModelMixin,DestroyModelMixin):
+    """
+    회원 update&Delete
+    """
+    user = get_user_model()
+    queryset=user.objects.all()
+    serializer_class = UserUpdateDeleteSerializer
+

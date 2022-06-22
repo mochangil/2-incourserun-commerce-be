@@ -1,3 +1,6 @@
+from operator import mod
+from pyexpat import model
+from statistics import mode
 from django.contrib.auth.models import AbstractUser, UserManager as DjangoUserManager
 from django.db import models
 
@@ -29,11 +32,30 @@ class UserManager(DjangoUserManager):
 
 
 class User(AbstractUser):
+    # CHOICES?
+    GENDER_CHOICES = [
+        ('M','Man'),
+        ('W','Woman'),
+    ]
+    AGE_CHOICES = [
+        ('10','10s'),
+        ('20','20s'),
+        ('30','30s'),
+        ('40','40s'),
+        ('50','50s'),
+    ]
     first_name = None
     last_name = None
-
-    email = models.EmailField(verbose_name="이메일", unique=True)
+    nickname = models.CharField(verbose_name="별칭", max_length=10,unique=True,default="")
+    email = models.EmailField(verbose_name="이메일", unique=True,default="")
     phone = models.CharField(verbose_name="휴대폰", max_length=11, null=True, blank=True)
+    gender = models.CharField(verbose_name="성별",max_length = 6,choices=GENDER_CHOICES,null=True)
+    age = models.CharField(verbose_name="나이",max_length = 6,choices=AGE_CHOICES,null=True)
+    address = models.CharField(verbose_name="주소",max_length = 100,null=True)
+    zipcode = models.IntegerField(verbose_name="우편주소",null=True)
+    profile_img = models.ImageField(verbose_name="프로필사진",blank=True,null=True)
+    created = models.DateField(verbose_name="가입날짜",auto_now=True)
+
 
     USERNAME_FIELD = "username"
 

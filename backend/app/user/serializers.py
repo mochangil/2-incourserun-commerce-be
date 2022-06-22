@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
+import string
 
 from app.user.models import User, Social, SocialKindChoices
 
@@ -32,11 +33,30 @@ class UserSocialLoginSerializer(serializers.Serializer):
     def create(self, validated_data):
         social_user_id = validated_data['social_user_id']
         state = validated_data['state']
+        # get_or_create
+        # User.objects 메서드에 의해 생성되었다면 created = True, 기존의 데이터베이스에서 꺼내왔다면 = False
+        # user에는 우리가 꺼내려고 하는 모델의 인스턴스.
         user, created = User.objects.get_or_create(email=f'{social_user_id}@{state}.social', defaults={
             'password': make_password(None),
         })
 
         if created:
+        #새롭게 생성된 user에 대해 kakao의 정보와 연동한다.
+            user.username = validated_data['kakao_account']['name']
+            user.email = validated_data['kakao_account']['email']
+            user.gender = 'Woman' if validated_data['kakao_account']['gender'] else 'Man'
+            agematch = validated_data['kakao_account']['gender']
+            if agematch == "10~19":
+                user.age = "10s"
+            elif agematch == "20~29":
+                user.age = "20s"
+            elif agematch == "30~39":
+                user.age = "30s"
+            elif agematch == "40~49":
+                user.age = "40s"
+            else:
+                user.age = "50s"
+            user.save()
             Social.objects.create(user=user, kind=state)
 
         refresh = RefreshToken.for_user(user)
@@ -84,6 +104,36 @@ class UserSocialLoginSerializer(serializers.Serializer):
 # class UserCreateSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model=get_user_model()
+#         fields=['username','nickname','gender','phone','email','age']
 
 #     def create(self, validated_data):
+#         User.objects.create(**validated_data)
+#         return validated_data
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=get_user_model()
+        fields=['username','nickname','gender','phone','email','profile_img','age','zipcode','address']
+        #read_only_fields = ['username','nickname','gender','phone','email','profile_img','age','zipcode','address']
+
+class UserUpdateDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=get_user_model()
+        fields=['profile_img','username','nickname','phone','email','zipcode','address']
+        
+    def update(self, instance, validated_data):
+        instance.profile_img = validated_data.get('profile_img',instance.profile_img)
+        instance.username = validated_data.get('username',instance.username)
+        instance.nickname = validated_data.get('nickname',instance.nickname)
+        
+        instance.phone = validated_data.get('phone',instance.phone)
+        instance.email = validated_data.get('email',instance.email)
+        instance.zipcode = validated_data.get('zipcode',instance.zipcode)
+        instance.address = validated_data.get('address',instance.address)
+        instance.save()
+        return instance
+
+
+
+
         
