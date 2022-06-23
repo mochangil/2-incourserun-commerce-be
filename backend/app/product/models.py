@@ -1,5 +1,6 @@
 # from pyexpat import model
 # from termios import VERASE
+from operator import mod
 from django.db import models
 
 class Product(models.Model):
@@ -12,10 +13,13 @@ class Product(models.Model):
     #id = models.IntegerField(verbose_name="고유번호")
     productname = models.CharField(verbose_name="제품명", max_length=256)
     category = models.CharField(verbose_name ="category",max_length=20,choices=CATEGORY_CHOICES)
-    content = models.TextField(verbose_name="내용")
+    description = models.TextField(verbose_name="내용")
     # avg_rating, photo, detail_photo
     capacity = models.IntegerField(verbose_name="용량")
     price = models.IntegerField(verbose_name="가격")
+    photo = models.CharField(verbose_name="상품사진",max_length=500,null=True)
+    detailphoto = models.CharField(verbose_name="상품사진",max_length=500,null=True)
+
     created = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True)
 
     class Meta:
