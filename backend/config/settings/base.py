@@ -212,8 +212,9 @@ MEDIAFILES_LOCATION = "media"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/"
 
 # KAKAO
-KAKAO_CLIENT_ID = 'USER KAKAO CLIENT ID'
-KAKAO_CLIENT_SECRET = 'USER KAKAO CLIENT SECRET'
+KAKAO_CLIENT_ID = '0f2accaef0c01f071666fb37cfce10c6'
+KAKAO_CLIENT_SECRET = '2bcb1ac972d957f485203c844a8b4bda'
+KAKAO_REDIRECT_URL = 'http://127.0.0.1:8000/v1/user/login/kakao/callback'
 '''
 KAKAO LOGIN URL
 https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${SOCIAL_REDIRECT_URL}&state=kakao
