@@ -5,8 +5,8 @@ from app.user.models import User
 class Review(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,db_column="user")
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    rating = models.SmallIntegerField(verbose_name="평점")
-    context = models.TextField(verbose_name="제품설명")
+    rating = models.FloatField(verbose_name="평점")
+    context = models.TextField(verbose_name="후기내용")
     create_date = models.DateTimeField(verbose_name="작성일자",auto_now_add=True)
 
     class Meta:
