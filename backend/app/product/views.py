@@ -7,7 +7,7 @@ from app.review.models import Review
 from django.db.models import Subquery, OuterRef,Avg, Count
 from django_filters import rest_framework as filters
 
-from backend.app.product.filters import ProductFilter
+from app.product.filters import ProductFilter
 
 
 class ProductListCreateView(ListCreateAPIView):
