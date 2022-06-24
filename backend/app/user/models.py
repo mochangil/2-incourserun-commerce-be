@@ -1,8 +1,6 @@
-from operator import mod
-from pyexpat import model
-from statistics import mode
 from django.contrib.auth.models import AbstractUser, UserManager as DjangoUserManager
 from django.db import models
+from app.product.models import Product
 
 
 class UserManager(DjangoUserManager):
@@ -83,4 +81,13 @@ class Social(models.Model):
 
     class Meta:
         verbose_name = '소셜'
+        verbose_name_plural = verbose_name
+
+class Cart(models.Model):
+    user = models.ForeignKey(User,related_name="cart",on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amounts = models.IntegerField(verbose_name="수량")
+
+    class Meta:
+        verbose_name = "장바구니"
         verbose_name_plural = verbose_name
