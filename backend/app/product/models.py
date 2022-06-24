@@ -19,7 +19,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="가격")
     photo = models.CharField(verbose_name="상품사진",max_length=500,null=True)
     detailphoto = models.CharField(verbose_name="상품사진",max_length=500,null=True)
-
+    hashtags = models.ManyToManyField("Hashtag",related_name='product')
     created = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True)
 
     class Meta:
@@ -28,3 +28,12 @@ class Product(models.Model):
     
     def __str__(self):
         return self.productname
+
+class Hashtag(models.Model):
+    name = models.CharField(verbose_name="이름",max_length=20)
+    class Meta:
+        verbose_name = "해시태그"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
