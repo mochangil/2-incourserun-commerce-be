@@ -1,8 +1,8 @@
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny
 from django.db.models.functions import Coalesce
-from app.product.models import Product
-from app.product.serializers import ProductListCreateSerializer, ProductListUpdateDeleteSerializer
+from app.product.models import Product,Hashtag
+from app.product.serializers import HashtagSerializer, ProductListCreateSerializer, ProductListUpdateDeleteSerializer
 from app.review.models import Review
 from django.db.models import Subquery, OuterRef,Avg, Count
 
@@ -32,3 +32,11 @@ class ProductUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     )
     queryset = Product.objects.all()
     serializer_class = ProductListUpdateDeleteSerializer
+
+class HashtagListCreateView(ListCreateAPIView):
+    queryset = Hashtag.objects.all()
+    serializer_class = HashtagSerializer
+
+class HashtagUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    queryset = Hashtag.objects.all()
+    serializer_class = HashtagSerializer
