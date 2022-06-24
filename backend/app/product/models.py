@@ -1,6 +1,3 @@
-# from pyexpat import model
-# from termios import VERASE
-from operator import mod
 from django.db import models
 
 class Product(models.Model):
@@ -19,7 +16,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="가격")
     photo = models.CharField(verbose_name="상품사진",max_length=500,null=True)
     detailphoto = models.CharField(verbose_name="상품사진",max_length=500,null=True)
-    hashtags = models.ManyToManyField("Hashtag",related_name='product')
+    # hashtags = models.ManyToManyField("Hashtag",related_name='product')
     created = models.DateTimeField(verbose_name="등록날짜", auto_now_add=True)
 
     class Meta:
@@ -31,6 +28,7 @@ class Product(models.Model):
 
 class Hashtag(models.Model):
     name = models.CharField(verbose_name="이름",max_length=20)
+    product = models.ForeignKey(Product,related_name="hashtags",on_delete=models.CASCADE)
     class Meta:
         verbose_name = "해시태그"
         verbose_name_plural = verbose_name

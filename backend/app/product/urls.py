@@ -5,6 +5,6 @@ from .views import ProductListCreateView,ProductUpdateDeleteView,HashtagListCrea
 urlpatterns = [
     path("", ProductListCreateView.as_view()),
     path("/<int:pk>", ProductUpdateDeleteView.as_view()),
-    path("hashtag",HashtagListCreateView.as_view()),
-    path("hashtag/<int:pk>",HashtagUpdateDeleteView.as_view())
+    path("/hashtag",HashtagListCreateView.as_view()),
+    path("/hashtag/<int:pk>",HashtagUpdateDeleteView.as_view())
 ]
