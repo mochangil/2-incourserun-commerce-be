@@ -105,10 +105,16 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart
         fields='__all__'
 
-    # use get_or_create || update_or_create later
-    
-
-
+    # update_or_create || unique_constraints
+    def create(self,validated_data):
+        productname = validated_data["product"]
+        productamounts = validated_data["amounts"]
+        username = validated_data["user"]
+        content,created=Cart.objects.get_or_create(product=productname,defaults=dict(user=username,amounts=productamounts))
+        if created!=True:
+            content.amounts += productamounts
+            content.save()
+        return content
 
 
 class UserSerializer(serializers.ModelSerializer):
