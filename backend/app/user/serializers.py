@@ -101,15 +101,6 @@ class UserSocialLoginSerializer(serializers.Serializer):
         pass
 
 
-# class UserCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=get_user_model()
-#         fields=['username','nickname','gender','phone','email','age']
-
-#     def create(self, validated_data):
-#         User.objects.create(**validated_data)
-#         return validated_data
-
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model=get_user_model()
