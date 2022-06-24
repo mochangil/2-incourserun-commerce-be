@@ -5,6 +5,9 @@ from app.product.models import Product,Hashtag
 from app.product.serializers import HashtagSerializer, ProductListCreateSerializer, ProductListUpdateDeleteSerializer
 from app.review.models import Review
 from django.db.models import Subquery, OuterRef,Avg, Count
+from django_filters import rest_framework as filters
+
+from backend.app.product.filters import ProductFilter
 
 
 class ProductListCreateView(ListCreateAPIView):
@@ -32,6 +35,9 @@ class ProductUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     )
     queryset = Product.objects.all()
     serializer_class = ProductListUpdateDeleteSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = ProductFilter 
+    
 
 class HashtagListCreateView(ListCreateAPIView):
     queryset = Hashtag.objects.all()
