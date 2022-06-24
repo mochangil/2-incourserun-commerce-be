@@ -6,7 +6,7 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User
+from .models import Cart, User
 import string
 
 from app.user.models import User, Social, SocialKindChoices
@@ -100,17 +100,29 @@ class UserSocialLoginSerializer(serializers.Serializer):
     def get_naver_user_id(self, code, redirect_uri):
         pass
 
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields='__all__'
 
-class UserListSerializer(serializers.ModelSerializer):
+    # use get_or_create || update_or_create later
+    
+
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    cart = CartSerializer(many=True,read_only=True)
     class Meta:
         model=get_user_model()
-        fields=['username','nickname','gender','phone','email','profile_img','age','zipcode','address']
+        fields=['username','nickname','gender','phone','email','profile_img','age','zipcode','address','cart']
         #read_only_fields = ['username','nickname','gender','phone','email','profile_img','age','zipcode','address']
 
 class UserUpdateDeleteSerializer(serializers.ModelSerializer):
+    cart = CartSerializer(many=True, read_only=True)
     class Meta:
         model=get_user_model()
-        fields=['profile_img','username','nickname','phone','email','zipcode','address']
+        fields=['profile_img','username','nickname','phone','email','zipcode','address','cart']
         
     def update(self, instance, validated_data):
         instance.profile_img = validated_data.get('profile_img',instance.profile_img)

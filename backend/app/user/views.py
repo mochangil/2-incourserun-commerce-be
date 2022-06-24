@@ -14,13 +14,13 @@ class UserSocialLoginView(CreateAPIView):
     """
     serializer_class = UserSocialLoginSerializer
 #for test
-class UserListView(ListCreateAPIView):
+class UserListCreateView(ListCreateAPIView):
     """
     회원목록 확인
     """
     user = get_user_model()
     queryset=user.objects.all()
-    serializer_class = UserListSerializer
+    serializer_class = UserSerializer
 
 class UserUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -29,6 +29,14 @@ class UserUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     user = get_user_model()
     queryset=user.objects.all()
     serializer_class = UserUpdateDeleteSerializer
+
+class CartListCreateView(ListCreateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+class CartUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
 
 def kakao_login(request):
     client_id = settings.KAKAO_CLIENT_ID
@@ -51,3 +59,4 @@ def kakao_callback(request):
     if not response.ok:
         raise ValidationError()
     return redirect("http://127.0.0.1:8000/v1/user")
+
