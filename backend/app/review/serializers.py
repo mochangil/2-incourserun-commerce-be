@@ -1,7 +1,9 @@
+from operator import mod
+from attr import field
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
-from app.review.models import Review
+from app.review.models import Reply, Review
 
 
 class ReviewListCreateSerializer(serializers.ModelSerializer):
@@ -21,6 +23,24 @@ class ReviewListUpdateDeleteSerializer(serializers.ModelSerializer):
     def update(self,instance, validated_data):
         instance.rating = validated_data.get('rating',instance.rating)
         instance.category = validated_data.get('category',instance.category)
+        instance.context = validated_data.get('context',instance.context)
+        instance.save()
+
+        return instance
+
+class ReplyListCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = '__all__'
+
+class ReplyUpdateDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = '__all__'
+    
+    def update(self,instance, validated_data):
+        # instance.rating = validated_data.get('rating',instance.rating)
+        # instance.category = validated_data.get('category',instance.category)
         instance.context = validated_data.get('context',instance.context)
         instance.save()
 
