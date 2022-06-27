@@ -8,6 +8,7 @@ from django.db.models import Subquery, OuterRef,Avg, Count
 from django_filters import rest_framework as filters
 
 from app.product.filters import ProductFilter
+from app.product.paginations import ProductPagination
 
 
 class ProductListCreateView(ListCreateAPIView):
@@ -24,6 +25,9 @@ class ProductListCreateView(ListCreateAPIView):
     # queryset = queryset.annotate(cnt_rating=Subquery(rating_queries.values('cnt')[:1]))
     # pagination_class = ProductPagination
     serializer_class = ProductListCreateSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = ProductFilter 
+    pagination_class = ProductPagination
 
 class ProductUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     avg_rating_subquery = Review.objects.filter(product=OuterRef('id')).values('product').annotate(avg=Avg('rating')).values('avg')
@@ -35,8 +39,6 @@ class ProductUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     )
     queryset = Product.objects.all()
     serializer_class = ProductListUpdateDeleteSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_class = ProductFilter 
     
 
 class HashtagListCreateView(ListCreateAPIView):

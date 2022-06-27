@@ -105,7 +105,7 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart
         fields='__all__'
 
-    # update_or_create || unique_constraints
+    # get_or_create
     def create(self,validated_data):
         productname = validated_data["product"]
         productamounts = validated_data["amounts"]
