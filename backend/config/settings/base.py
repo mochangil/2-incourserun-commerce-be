@@ -30,6 +30,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "multiselectfield",
     "storages",
+    "ckeditor_uploader",
 ]
 
 DJANGO_APPS = [
