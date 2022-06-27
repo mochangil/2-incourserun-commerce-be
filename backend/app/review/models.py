@@ -14,8 +14,11 @@ class Review(models.Model):
     create_date = models.DateTimeField(verbose_name="작성일자",auto_now_add=True)
 
     class Meta:
+        #기본 정렬값 - 최신순
+        ordering = ['create_date']
         verbose_name = "후기"
         verbose_name_plural = verbose_name
+    
     
 
 class Reply(models.Model):
