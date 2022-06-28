@@ -44,8 +44,9 @@ class User(AbstractUser):
     ]
     first_name = None
     last_name = None
-    nickname = models.CharField(verbose_name="별칭", max_length=10,unique=True,default="")
-    email = models.EmailField(verbose_name="이메일", unique=True,default="")
+    nickname = models.CharField(verbose_name="별칭", max_length=10,null=True,default="")
+    email = models.EmailField(verbose_name="이메일",unique=True)
+    real_email=models.EmailField(verbose_name="실제이메일",null=True)
     phone = models.CharField(verbose_name="휴대폰", max_length=11, null=True, blank=True)
     gender = models.CharField(verbose_name="성별",max_length = 6,choices=GENDER_CHOICES,null=True)
     age = models.CharField(verbose_name="나이",max_length = 6,choices=AGE_CHOICES,null=True)
@@ -53,7 +54,7 @@ class User(AbstractUser):
     zipcode = models.IntegerField(verbose_name="우편주소",null=True)
     profile_img = models.ImageField(verbose_name="프로필사진",blank=True,null=True)
     created = models.DateField(verbose_name="가입날짜",auto_now=True)
-
+    is_register = models.BooleanField(verbose_name="등록여부",default=False)
 
     USERNAME_FIELD = "username"
 

@@ -14,7 +14,7 @@ class UserSocialLoginView(CreateAPIView):
     """
     serializer_class = UserSocialLoginSerializer
 #for test
-class UserListCreateView(ListCreateAPIView):
+class UserListCreateView(ListAPIView):
     """
     회원목록 확인
     """
@@ -39,24 +39,34 @@ class CartUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = CartSerializer
 
 def kakao_login(request):
+    print("hello")
     client_id = settings.KAKAO_CLIENT_ID
-    redirect_uri = "http://127.0.0.1:8000/v1/user/login/kakao/callback"
+    print(client_id)
+    redirect_uri = f"{settings.USER_ROOT}/login/kakao/callback"
+    print(redirect_uri)
+
     return redirect(
-        f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+        f"https://kauth.kakao.com/oauth/authorize?&client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
     )
     
 def kakao_callback(request):
     code = request.GET.get("code")
+    print(code)
     redirect_uri = settings.KAKAO_REDIRECT_URL
-
-    url = "http://127.0.0.1:8000/v1/user/social_login"
+    print(redirect_uri)
+    url = f"{settings.USER_ROOT}/social_login"
+    print(url)
     data = {
         'code': code,
         'state':'kakao',
         'redirect_uri': redirect_uri,
+        # 'client_secret': settings.KAKAO_CLIENT_SECRET,
     }
+    print('\n\n\n\wow before \n\n\n')
     response = requests.post(url=url, data=data)
+    print('\n\n\n\wow after \n\n\n')
+    print(response.ok)
     if not response.ok:
         raise ValidationError()
-    return redirect("http://127.0.0.1:8000/v1/user")
+    return redirect(settings.USER_ROOT)
 
