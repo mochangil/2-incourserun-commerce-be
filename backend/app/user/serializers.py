@@ -6,10 +6,7 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Cart, User
-import string
-
-from app.user.models import User, Social, SocialKindChoices
+from .models import Cart, User,Social,SocialKindChoices
 
 
 class UserSocialLoginSerializer(serializers.Serializer):
@@ -25,28 +22,38 @@ class UserSocialLoginSerializer(serializers.Serializer):
         if attrs['state'] not in SocialKindChoices:
             raise ValidationError({'kind': '지원하지 않는 소셜 타입입니다.'})
 
-        attrs['social_user_id'] = self.get_social_user_id(attrs['code'], attrs['state'])
-
+        # print(attrs['code'])
+        attrs['datas'] = self.get_social_user_id(attrs['code'],attrs['state'])
+        # print(attrs,"\n\n\n\n")
+        
         return attrs
 
     @transaction.atomic
     def create(self, validated_data):
-        social_user_id = validated_data['social_user_id']
+        # print("print validated_data\n",validated_data,"\n\n\n\n")
+        social_user_id = validated_data['datas']['id']#['social_user_id']
+        # print(social_user_id,"\n\n\n\n")
         state = validated_data['state']
+        # print(state)
+        # print("\n\n\n\n\n")
+
         # get_or_create
         # User.objects 메서드에 의해 생성되었다면 created = True, 기존의 데이터베이스에서 꺼내왔다면 = False
         # user에는 우리가 꺼내려고 하는 모델의 인스턴스.
         user, created = User.objects.get_or_create(email=f'{social_user_id}@{state}.social', defaults={
-            'password': make_password(None),
+            'password': make_password(None)
         })
 
         if created:
         #새롭게 생성된 user에 대해 kakao의 정보와 연동한다.
-            user.username = validated_data['kakao_account']['name']
-            user.email = validated_data['kakao_account']['email']
-            user.gender = 'Woman' if validated_data['kakao_account']['gender'] else 'Man'
-            agematch = validated_data['kakao_account']['gender']
-            if agematch == "10~19":
+            user.username = validated_data['datas']['properties']['nickname']
+            user.realemail = validated_data['datas']['kakao_account']['email']
+            user.nickname = validated_data['datas']['kakao_account']['profile'].get('nickname')
+            user.gender = 'Woman' if validated_data['datas']['kakao_account']['gender'] == 'female' else 'Man'
+            agematch = validated_data['datas']['kakao_account']['age_range']
+            if agematch == "0~9":
+                user.age = "10s"
+            elif agematch == "10~19":
                 user.age = "10s"
             elif agematch == "20~29":
                 user.age = "20s"
@@ -68,7 +75,7 @@ class UserSocialLoginSerializer(serializers.Serializer):
         }
 
     def get_social_user_id(self, code, state):
-        redirect_uri = settings.SOCIAL_REDIRECT_URL
+        redirect_uri = settings.KAKAO_REDIRECT_URL
         social_user_id = getattr(self, f'get_{state}_user_id')(code, redirect_uri)
         return social_user_id
 
@@ -94,8 +101,8 @@ class UserSocialLoginSerializer(serializers.Serializer):
         if not response.ok:
             raise ValidationError('KAKAO ME API ERROR')
         data = response.json()
-
-        return data['id']
+        # print("post data",data,"\n\n\n")
+        return data
 
     def get_naver_user_id(self, code, redirect_uri):
         pass
