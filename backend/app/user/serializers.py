@@ -47,7 +47,7 @@ class UserSocialLoginSerializer(serializers.Serializer):
         if created:
         #새롭게 생성된 user에 대해 kakao의 정보와 연동한다.
             user.username = validated_data['datas']['properties']['nickname']
-            user.realemail = validated_data['datas']['kakao_account']['email']
+            user.real_email = validated_data['datas']['kakao_account']['email']
             user.nickname = validated_data['datas']['kakao_account']['profile'].get('nickname')
             user.gender = 'Woman' if validated_data['datas']['kakao_account']['gender'] == 'female' else 'Man'
             agematch = validated_data['datas']['kakao_account']['age_range']
@@ -128,7 +128,7 @@ class UserSerializer(serializers.ModelSerializer):
     cart = CartSerializer(many=True,read_only=True)
     class Meta:
         model=get_user_model()
-        fields=['username','nickname','gender','phone','email','profile_img','age','zipcode','address','cart']
+        fields=['username','nickname','gender','phone','email','real_email','profile_img','age','zipcode','address','cart','is_register']
         #read_only_fields = ['username','nickname','gender','phone','email','profile_img','age','zipcode','address']
 
 class UserUpdateDeleteSerializer(serializers.ModelSerializer):
