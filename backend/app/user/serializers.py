@@ -111,7 +111,6 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields='__all__'
-
     # get_or_create
     def create(self,validated_data):
         productname = validated_data["product"]
@@ -120,7 +119,10 @@ class CartSerializer(serializers.ModelSerializer):
         content,created=Cart.objects.get_or_create(product=productname,defaults=dict(user=username,amounts=productamounts))
         if created!=True:
             content.amounts += productamounts
-            content.save()
+            if content.amounts <= 0:
+                content.delete()
+            else:
+                content.save()
         return content
 
 

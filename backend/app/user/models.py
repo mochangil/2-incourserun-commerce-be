@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser, UserManager as DjangoUserManager
 from django.db import models
 from app.product.models import Product
-
+from django.core.validators import MinValueValidator
 
 class UserManager(DjangoUserManager):
     def _create_user(self, username, password=None, **extra_fields):
