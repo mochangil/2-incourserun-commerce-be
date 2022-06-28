@@ -24,7 +24,6 @@ class UserSocialLoginSerializer(serializers.Serializer):
 
         # print(attrs['code'])
         attrs['datas'] = self.get_social_user_id(attrs['code'],attrs['state'])
-        # attrs['social_user_id'] = datas['id']
         # print(attrs,"\n\n\n\n")
         
         return attrs
@@ -46,7 +45,6 @@ class UserSocialLoginSerializer(serializers.Serializer):
         })
 
         if created:
-            print("\n\n is it created?\n\n")
         #새롭게 생성된 user에 대해 kakao의 정보와 연동한다.
             user.username = validated_data['datas']['properties']['nickname']
             user.realemail = validated_data['datas']['kakao_account']['email']

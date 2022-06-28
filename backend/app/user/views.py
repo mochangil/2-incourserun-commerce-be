@@ -14,7 +14,7 @@ class UserSocialLoginView(CreateAPIView):
     """
     serializer_class = UserSocialLoginSerializer
 #for test
-class UserListCreateView(ListAPIView):
+class UserListCreateView(ListCreateAPIView):
     """
     회원목록 확인
     """
@@ -39,11 +39,8 @@ class CartUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = CartSerializer
 
 def kakao_login(request):
-    print("hello")
     client_id = settings.KAKAO_CLIENT_ID
-    print(client_id)
     redirect_uri = f"{settings.USER_ROOT}/login/kakao/callback"
-    print(redirect_uri)
 
     return redirect(
         f"https://kauth.kakao.com/oauth/authorize?&client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
@@ -51,22 +48,21 @@ def kakao_login(request):
     
 def kakao_callback(request):
     code = request.GET.get("code")
-    print(code)
     redirect_uri = settings.KAKAO_REDIRECT_URL
-    print(redirect_uri)
     url = f"{settings.USER_ROOT}/social_login"
-    print(url)
     data = {
         'code': code,
         'state':'kakao',
         'redirect_uri': redirect_uri,
         # 'client_secret': settings.KAKAO_CLIENT_SECRET,
     }
-    print('\n\n\n\wow before \n\n\n')
+    # print('\n\n\n----before----\n\n\n')
     response = requests.post(url=url, data=data)
-    print('\n\n\n\wow after \n\n\n')
+    # print('\n\n\n----after---- \n\n\n')
     print(response.ok)
     if not response.ok:
         raise ValidationError()
+    # usernickname = request.get()
+    #redirect에서 user update로 연계되면 안되려나?
     return redirect(settings.USER_ROOT)
 
