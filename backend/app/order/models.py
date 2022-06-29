@@ -17,6 +17,8 @@ class Order(models.Model):
         ('paid','결제완료'),
         ('cancelled','결제취소')
     )
+    #uid -> 결제시스템에서 주는 번호.
+    #일시불 (only카드)
     user = models.ForeignKey(User, related_name="orders", on_delete = models.CASCADE)
     created = models.DateTimeField(verbose_name="주문일시", auto_now_add=True)
     # product = models.ForeignKey(Product,on_delete=models.CASCADE)
@@ -37,9 +39,6 @@ class Order(models.Model):
     class Meta:
         verbose_name = "주문"
         verbose_name_plural = verbose_name
-    
-    def __str__(self):
-        return self.user
 
 
 
@@ -51,5 +50,3 @@ class Productorder(models.Model):
     class Meta:
         verbose_name = "주문-상품"
         verbose_name_plural = verbose_name
-    def __str__(self):
-        return self.quantity

@@ -37,7 +37,6 @@ class ProductUpdateDeleteView(RetrieveUpdateDestroyAPIView):
         avg_rating = Coalesce(Subquery(avg_rating_subquery), 0.0),
         review_count = Coalesce(Subquery(review_count_subquery), 0)
     )
-    queryset = Product.objects.all()
     serializer_class = ProductListUpdateDeleteSerializer
     
 
