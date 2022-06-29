@@ -84,6 +84,9 @@ class Social(models.Model):
         verbose_name = '소셜'
         verbose_name_plural = verbose_name
 
+#manytomany 쓰로트
+#중간테이블
+
 class Cart(models.Model):
     user = models.ForeignKey(User,related_name="cart",on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
